@@ -48,4 +48,31 @@ There are other paths she could have taken, but they are longer, and since she w
 We don't want to give too much away here, so we will just say that this kind of problem has many well-known and well-documented solutions in computer science. Before searching for a solution, you can probably start out just looking at the map, and think about how you might navigate these yourself, how you would determine what direction you could move from a given point, what you might do if you come to a dead-end, how you might keep track of intersections and coordinates you have already visited, and so on. These are the kinds of things that have well-known solutions, so once you have a basic idea how you might approach the problem, you are free to either start implementing that, or do a google search or chat and see the well-known algorithms that pop up, and then move forward with one of those implementations. 
 
 ### Template Implementations
-There are a number of starter projects under the [Templates](./Templates) directory. These templates include the basic setup of a project in each of the implemented languages, and a `loadMap` function/method to load up a map file into a 2D array, and a function/method called `findShortestPath` that you will need to implement, to return a list of the xy coordinates of the shortest path for a given maze (represented by the 2D array). There are also 2 unit tests, one for the "small" maze, and one for the "large" maze, that will be failing until you implement the `findShortestPath` function/method.
+There are a number of starter projects under the [Templates](./Templates) directory. These templates include the basic setup of a project in each of the implemented languages, and a `loadMap` function/method to load up a map file into a 2D array, and a function/method called `findShortestPath` that you will need to implement, to return a list of the `[row, column]` coordinates of the shortest path for a given maze (represented by the 2D array). There are also 2 unit tests, one for the "small" maze, and one for the "large" maze, that will be failing until you implement the `findShortestPath` function/method.
+
+**:warning: Important Note :warning:**
+The unit tests expect the `findShortestPath` function/method to return pairs of coordinates as `[row, column]`, so be careful when implementing this, and make sure you return the pairs in `[row, column]` order. This may be different than what you might think about with `[x, y]` coordinates, since `[x, y]` would typically be `[column, row]`.
+
+So for the example above, the solution would be:
+```json
+[
+  [0,1], // The 'S' point - row 0, column 1
+  [1,1],
+  [2,1],
+  [3,1],
+  [4,1],
+  [5,1],
+  [5,2],
+  [5,3],
+  [4,3],
+  [3,3],
+  [3,4],
+  [3,5],
+  [3,6],
+  [4,6],
+  [5,6],
+  [5,7],
+  [5,8],
+  [5,9]  // The 'E' point - row 5, column 9
+]
+```
