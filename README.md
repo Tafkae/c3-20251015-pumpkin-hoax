@@ -1,5 +1,5 @@
 # 2025-10-15 - The Great Pumpkin Hoax
-<img src="./GreatPumpkin.jpg" alt="Alt text" width="200">
+<img src="./GreatPumpkin.jpg" alt="Alt text" width="100%">
 
 ## The Story
 It's Halloween night, and we all know that means that The Great Pumpkin is going to pay a visit to the most sincere pumpkin patch and deliver toys and candy to all the deserving children. As usual, Linus has convinced Sally that his pumpkin patch is the most sincere, and that she should wait for the arrival of The Great Pumpkin with him.
@@ -31,7 +31,8 @@ In the map, you'll find the following symbols:
 - `#` - a "wall" of corn - Sally can't go through this
 
 In the example map above, you can easily see that Sally can make these moves to exit:
-- Start :warning: **This is important, the first point needs to be included in the route, since we will have to tell Sally where to start the maze!**
+- Start
+  - :warning: **This is important, the first point needs to be included in the route, since we will have to tell Sally where to start the maze!**
 - Down 5
 - Right 2
 - Up 2
