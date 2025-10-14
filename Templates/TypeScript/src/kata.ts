@@ -1,4 +1,4 @@
-// This is just a simple type to hold x and y coordinates
+// This is just a simple type to hold row and column coordinates
 export type Point = [number, number];
 
 export class Kata {
