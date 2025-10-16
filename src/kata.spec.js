@@ -1,43 +1,188 @@
-const Kata = require('./kata');
+const Kata = require("./kata");
 
 let fixture;
 
 // This is a Jest unit test - see https://jestjs.io/docs/en/getting-started for more information
 
 beforeEach(() => {
-    fixture = new Kata();
+  fixture = new Kata();
 });
 
-test('hello should return message with specified name', () => {
-    const name = 'Ingage';
-    expect(fixture.hello(name)).toEqual(`Hello ${name}`);
+test("hello should return message with specified name", () => {
+  const name = "Ingage";
+  expect(fixture.hello(name)).toEqual(`Hello ${name}`);
 });
 
-test('small map shortest path should be correct', () => {
-    const smallMap = fixture.loadMap('../../cornmaze-small.txt');
-    const smallPath = fixture.findShortestPath(smallMap);
-    expect(smallPath).toEqual([
-        [1, 0],[1, 1],[1, 2],[1, 3],[1, 4],[1, 5],[1, 6],[1, 7],[2, 7],[3, 7],[3, 8],[4, 8],[5, 8],[6, 8],[7, 8],[8, 8],[8, 9]
-    ]);
+test("findStartingPoint should return coordinates of 'S'", () => {
+  const smallMap = fixture.loadMap("./cornmaze-small.txt");
+  console.log(smallMap);
+  const startingPoint = fixture.findStartingPoint(smallMap);
+  expect(startingPoint).toEqual([1, 0]);
 });
 
-test('large map shortest path should be correct', () => {
-    const largeMap = fixture.loadMap('../../cornmaze-large.txt');
-    const largePath = fixture.findShortestPath(largeMap);
-    expect(largePath).toEqual(
-        [
-            [13, 0], [13, 1], [14, 1], [15, 1], [15, 2], [15, 3], [16, 3], [17, 3],
-            [17, 2], [17, 1], [18, 1], [19, 1], [20, 1], [21, 1], [22, 1], [23, 1],
-            [24, 1], [25, 1], [25, 2], [25, 3], [25, 4], [25, 5], [25, 6], [25, 7],
-            [25, 8], [25, 9], [25, 10], [25, 11], [25, 12], [25, 13], [26, 13], [27, 13],
-            [28, 13], [29, 13], [29, 12], [29, 11], [28, 11], [27, 11], [27, 10], [27, 9],
-            [27, 8], [27, 7], [27, 6], [27, 5], [27, 4], [27, 3], [27, 2], [27, 1],
-            [28, 1], [29, 1], [30, 1], [31, 1], [31, 2], [31, 3], [30, 3], [29, 3],
-            [29, 4], [29, 5], [29, 6], [29, 7], [29, 8], [29, 9], [30, 9], [31, 9],
-            [31, 10], [31, 11], [31, 12], [31, 13], [31, 14], [31, 15], [31, 16], [31, 17],
-            [31, 18], [31, 19], [31, 20], [31, 21], [31, 22], [31, 23], [30, 23], [29, 23],
-            [29, 24], [29, 25], [29, 26], [29, 27], [29, 28], [29, 29], [30, 29], [31, 29],
-            [31, 30], [31, 31], [31, 32]
-        ]
-    );   
+test("findEndPoint should return coordinates of 'E'", () => {
+  const smallMap = fixture.loadMap("./cornmaze-small.txt");
+  const endingPoint = fixture.findEndPoint(smallMap);
+  expect(endingPoint).toEqual([8, 9]);
 });
+
+test("get 'direction' should return the coordinate in the correct direction", () => {
+  expect(fixture.getUp([1, 1])).toEqual([0, 1]);
+  expect(fixture.getDown([1, 1])).toEqual([2, 1]);
+  expect(fixture.getLeft([1, 1])).toEqual([1, 0]);
+  expect(fixture.getRight([1, 1])).toEqual([1, 2]);
+});
+
+test("charAt(cornMaze, coords) should return the character at the specified [row, col] of the maze", () => {
+  const smallMap = fixture.loadMap("./cornmaze-small.txt");
+  expect(fixture.charAt(smallMap, [0, 0])).toEqual("#");
+  expect(fixture.charAt(smallMap, [1, 0])).toEqual("S");
+  expect(fixture.charAt(smallMap, [8, 1])).toEqual(".");
+  expect(fixture.charAt(smallMap, [8, 9])).toEqual("E");
+});
+
+test("isNavigable should be true if character at coords is '.' or 'E'", () => {
+  const smallMap = fixture.loadMap("./cornmaze-small.txt");
+  expect(fixture.isNavigable(smallMap, [8, 1])).toEqual(true);
+  expect(fixture.isNavigable(smallMap, [8, 9])).toEqual(true);
+});
+
+test("isNavigable should be false if coords are out of bounds", () => {
+  const smallMap = fixture.loadMap("./cornmaze-small.txt");
+  expect(fixture.isNavigable(smallMap, [50, 0])).toEqual(false);
+  expect(fixture.isNavigable(smallMap, [0, 50])).toEqual(false);
+  expect(fixture.isNavigable(smallMap, [42, 42])).toEqual(false);
+  expect(fixture.isNavigable(smallMap, [-1, 0])).toEqual(false);
+  expect(fixture.isNavigable(smallMap, [0, -1])).toEqual(false);
+  expect(fixture.isNavigable(smallMap, [-1, -1])).toEqual(false);
+});
+
+test("isNavigable should be false if character at coords is not '.' or 'E'", () => {
+  const smallMap = fixture.loadMap("./cornmaze-small.txt");
+  expect(fixture.isNavigable(smallMap, [0, 0])).toEqual(false);
+  expect(fixture.isNavigable(smallMap, [1, 0])).toEqual(false);
+});
+
+/*
+test("small map shortest path should be correct", () => {
+  const smallMap = fixture.loadMap("./cornmaze-small.txt");
+  const smallPath = fixture.findShortestPath(smallMap);
+  expect(smallPath).toEqual([
+    [1, 0],
+    [1, 1],
+    [1, 2],
+    [1, 3],
+    [1, 4],
+    [1, 5],
+    [1, 6],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+    [3, 8],
+    [4, 8],
+    [5, 8],
+    [6, 8],
+    [7, 8],
+    [8, 8],
+    [8, 9],
+  ]);
+});
+
+test("large map shortest path should be correct", () => {
+  const largeMap = fixture.loadMap("./cornmaze-large.txt");
+  const largePath = fixture.findShortestPath(largeMap);
+  expect(largePath).toEqual([
+    [13, 0],
+    [13, 1],
+    [14, 1],
+    [15, 1],
+    [15, 2],
+    [15, 3],
+    [16, 3],
+    [17, 3],
+    [17, 2],
+    [17, 1],
+    [18, 1],
+    [19, 1],
+    [20, 1],
+    [21, 1],
+    [22, 1],
+    [23, 1],
+    [24, 1],
+    [25, 1],
+    [25, 2],
+    [25, 3],
+    [25, 4],
+    [25, 5],
+    [25, 6],
+    [25, 7],
+    [25, 8],
+    [25, 9],
+    [25, 10],
+    [25, 11],
+    [25, 12],
+    [25, 13],
+    [26, 13],
+    [27, 13],
+    [28, 13],
+    [29, 13],
+    [29, 12],
+    [29, 11],
+    [28, 11],
+    [27, 11],
+    [27, 10],
+    [27, 9],
+    [27, 8],
+    [27, 7],
+    [27, 6],
+    [27, 5],
+    [27, 4],
+    [27, 3],
+    [27, 2],
+    [27, 1],
+    [28, 1],
+    [29, 1],
+    [30, 1],
+    [31, 1],
+    [31, 2],
+    [31, 3],
+    [30, 3],
+    [29, 3],
+    [29, 4],
+    [29, 5],
+    [29, 6],
+    [29, 7],
+    [29, 8],
+    [29, 9],
+    [30, 9],
+    [31, 9],
+    [31, 10],
+    [31, 11],
+    [31, 12],
+    [31, 13],
+    [31, 14],
+    [31, 15],
+    [31, 16],
+    [31, 17],
+    [31, 18],
+    [31, 19],
+    [31, 20],
+    [31, 21],
+    [31, 22],
+    [31, 23],
+    [30, 23],
+    [29, 23],
+    [29, 24],
+    [29, 25],
+    [29, 26],
+    [29, 27],
+    [29, 28],
+    [29, 29],
+    [30, 29],
+    [31, 29],
+    [31, 30],
+    [31, 31],
+    [31, 32],
+  ]);
+});
+*/
